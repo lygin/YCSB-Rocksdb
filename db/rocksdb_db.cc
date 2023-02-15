@@ -16,8 +16,9 @@ namespace ycsbc {
 RocksDB::RocksDB(const char *dbPath) {
   rocksdb::Options options;
   options.create_if_missing = true;
-  options.IncreaseParallelism();
   options.OptimizeLevelStyleCompaction();
+  // 8 background threads for compaction
+  options.IncreaseParallelism(8);
   rocksdb::Status s = rocksdb::DB::Open(options, dbPath, &db_);
   if (!s.ok()) {
     cerr << "Can't open rocksdb " << dbPath << s.ToString() << endl;
