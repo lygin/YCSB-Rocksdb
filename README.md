@@ -1,4 +1,4 @@
-# YCSB-C
+# YCSB-Rocksdb
 
 Fork from YCSB-C
 - separate load and run throughput
@@ -87,10 +87,4 @@ Percentiles(us): P50: 9.40 P90: 18.83 P99: 33.75 P99.9: 57.00 P99.99: 75.83
 [      60,      70 )       5   0.040%  99.976% 
 [      70,      80 )       3   0.024% 100.000% 
 ```
-Also reference run.sh and run\_redis.sh for the command line. See help by
-invoking `./ycsbc` without any arguments.
-
-Note that we do not have load and run commands as the original YCSB. Specify
-how many records to load by the recordcount property. Reference properties
-files in the workloads dir.
 
