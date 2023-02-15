@@ -63,6 +63,7 @@
     "__threading_support": "cpp",
     "__tree": "cpp",
     "__tuple": "cpp",
-    "__verbose_abort": "cpp"
+    "__verbose_abort": "cpp",
+    "iostream": "cpp"
   }
 }
