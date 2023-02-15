@@ -64,6 +64,7 @@
     "__tree": "cpp",
     "__tuple": "cpp",
     "__verbose_abort": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "future": "cpp"
   }
 }

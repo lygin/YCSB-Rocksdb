@@ -12,26 +12,37 @@
 #include <chrono>
 
 namespace utils {
+class Timer
+{
+public:
+	Timer() : tp_(std::chrono::high_resolution_clock::now()) {}
+	void Reset()
+	{
+		tp_ = std::chrono::high_resolution_clock::now();
+	}
+	double GetDurationSec()
+	{
+		auto tt = std::chrono::high_resolution_clock::now();
+		return std::chrono::duration_cast<std::chrono::duration<double>>(tt - tp_).count();
+	}
+	double GetDurationMs()
+	{
+		auto tt = std::chrono::high_resolution_clock::now();
+		return std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(tt - tp_).count();
+	}
+	double GetDurationUs()
+	{
+		auto tt = std::chrono::high_resolution_clock::now();
+		return std::chrono::duration_cast<std::chrono::duration<double, std::micro>>(tt - tp_).count();
+	}
+	double GetDurationNs()
+	{
+		auto tt = std::chrono::high_resolution_clock::now();
+		return std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(tt - tp_).count();
+	}
 
-template <typename T>
-class Timer {
- public:
-  void Start() {
-    time_ = Clock::now();
-  }
-
-  T End() {
-    Duration span;
-    Clock::time_point t = Clock::now();
-    span = std::chrono::duration_cast<Duration>(t - time_);
-    return span.count();
-  }
-
- private:
-  typedef std::chrono::high_resolution_clock Clock;
-  typedef std::chrono::duration<T> Duration;
-
-  Clock::time_point time_;
+private:
+	std::chrono::high_resolution_clock::time_point tp_;
 };
 
 } // utils

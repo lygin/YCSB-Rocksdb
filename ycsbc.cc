@@ -11,10 +11,12 @@
 #include <iostream>
 #include <vector>
 #include <future>
+#include <memory>
 #include "core/utils.h"
 #include "core/timer.h"
 #include "core/client.h"
 #include "core/core_workload.h"
+#include "core/histogram.h"
 #include "db/db_factory.h"
 
 using namespace std;
@@ -24,16 +26,20 @@ bool StrStartWith(const char *str, const char *pre);
 string ParseCommandLine(int argc, const char *argv[], utils::Properties &props);
 
 int DelegateClient(ycsbc::DB *db, ycsbc::CoreWorkload *wl, const int num_ops,
-    bool is_loading) {
+    bool is_loading, shared_ptr<Histogram> hist) {
   db->Init();
   ycsbc::Client client(*db, *wl);
   int oks = 0;
+  utils::Timer timer;
   for (int i = 0; i < num_ops; ++i) {
+    timer.Reset();
     if (is_loading) {
       oks += client.DoInsert();
     } else {
       oks += client.DoTransaction();
     }
+    double duration = timer.GetDurationUs();
+    hist->Add(duration);
   }
   db->Close();
   return oks;
@@ -53,15 +59,18 @@ int main(const int argc, const char *argv[]) {
   wl.Init(props);
 
   const int num_threads = stoi(props.GetProperty("threadcount", "1"));
-
+  vector<shared_ptr<Histogram>> hists;
   // Loads data
-  utils::Timer<double> timer;
-  timer.Start();
+  utils::Timer timer;
+  timer.Reset();
   vector<future<int>> actual_ops;
   int total_ops = stoi(props[ycsbc::CoreWorkload::RECORD_COUNT_PROPERTY]);
   for (int i = 0; i < num_threads; ++i) {
+    auto hist = make_shared<Histogram>();
+    hist->Clear();
+    hists.emplace_back(hist);
     actual_ops.emplace_back(async(launch::async,
-        DelegateClient, db, &wl, total_ops / num_threads, true));
+        DelegateClient, db, &wl, total_ops / num_threads, true, hist));
   }
   assert((int)actual_ops.size() == num_threads);
 
@@ -70,19 +79,28 @@ int main(const int argc, const char *argv[]) {
     assert(n.valid());
     sum += n.get();
   }
-  double duration = timer.End();
+  double duration = timer.GetDurationMs();
+  for (int i = 1; i < num_threads; i++) {
+    hists[0]->Merge(*hists[i]);
+  }
   cerr << "\n" << props["dbname"] << '\t' << file_name << '\t' << num_threads << '\n';
   cerr << "# Loading records:\t" << sum << endl;
   cerr << "# Load throughput (KOPS): ";
-  cerr << total_ops / duration / 1000 << endl;
+  cerr << total_ops / duration << endl;
+  cerr << hists[0]->ToString() << endl;
+
   // Peforms transactions
+  hists.clear();
   actual_ops.clear();
   total_ops = stoi(props[ycsbc::CoreWorkload::OPERATION_COUNT_PROPERTY]);
   
-  timer.Start();
+  timer.Reset();
   for (int i = 0; i < num_threads; ++i) {
+    auto hist = make_shared<Histogram>();
+    hist->Clear();
+    hists.emplace_back(hist);
     actual_ops.emplace_back(async(launch::async,
-        DelegateClient, db, &wl, total_ops / num_threads, false));
+        DelegateClient, db, &wl, total_ops / num_threads, false, hist));
   }
   assert((int)actual_ops.size() == num_threads);
 
@@ -91,10 +109,11 @@ int main(const int argc, const char *argv[]) {
     assert(n.valid());
     sum += n.get();
   }
-  duration = timer.End();
+  duration = timer.GetDurationMs();
   cerr << "# Run operations:\t" << sum << endl;
   cerr << "# Run throughput (KOPS): ";
-  cerr << total_ops / duration / 1000 << endl;
+  cerr << total_ops / duration << endl;
+  cerr << hists[0]->ToString() << endl;
 }
 
 string ParseCommandLine(int argc, const char *argv[], utils::Properties &props) {
