@@ -44,9 +44,10 @@ int RocksDB::Read(const std::string &table, const std::string &key,
                   std::vector<KVPair> &result) {
   string value;
   rocksdb::Status s = db_->Get(rocksdb::ReadOptions(), key, &value);
-  if (s.ok())
+  if (s.ok()) {
+    result.emplace_back(key, value);
     return DB::kOK;
-  if (s.IsNotFound()) {
+  } else if (s.IsNotFound()) {
     return DB::kOK;
   } else {
     cerr << "read error" << endl;
@@ -61,8 +62,17 @@ int RocksDB::Update(const std::string &table, const std::string &key,
 }
 
 int RocksDB::Delete(const std::string &table, const std::string &key) {
-  vector<DB::KVPair> values;
-  return Insert(table, key, values);
+  rocksdb::Status s;
+  auto wo = rocksdb::WriteOptions();
+  s = db_->Delete(wo, key);
+  if(s.ok()) {
+    return DB::kOK;
+  } else if(s.IsNotFound()) {
+    return DB::kOK;
+  }else {
+    cerr << "Delete error" << endl;
+    exit(0);
+  }
 }
 
 int RocksDB::Scan(const std::string &table, const std::string &key, int len,

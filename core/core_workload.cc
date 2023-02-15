@@ -22,14 +22,14 @@ const string CoreWorkload::TABLENAME_PROPERTY = "table";
 const string CoreWorkload::TABLENAME_DEFAULT = "usertable";
 
 const string CoreWorkload::FIELD_COUNT_PROPERTY = "fieldcount";
-const string CoreWorkload::FIELD_COUNT_DEFAULT = "10";
+const string CoreWorkload::FIELD_COUNT_DEFAULT = "1";
 
 const string CoreWorkload::FIELD_LENGTH_DISTRIBUTION_PROPERTY =
     "field_len_dist";
 const string CoreWorkload::FIELD_LENGTH_DISTRIBUTION_DEFAULT = "constant";
 
 const string CoreWorkload::FIELD_LENGTH_PROPERTY = "fieldlength";
-const string CoreWorkload::FIELD_LENGTH_DEFAULT = "1";
+const string CoreWorkload::FIELD_LENGTH_DEFAULT = "8";
 
 const string CoreWorkload::READ_ALL_FIELDS_PROPERTY = "readallfields";
 const string CoreWorkload::READ_ALL_FIELDS_DEFAULT = "true";
