@@ -110,6 +110,9 @@ int main(const int argc, const char *argv[]) {
     sum += n.get();
   }
   duration = timer.GetDurationMs();
+  for (int i = 1; i < num_threads; i++) {
+    hists[0]->Merge(*hists[i]);
+  }
   cerr << "# Run operations:\t" << sum << endl;
   cerr << "# Run throughput (KOPS): ";
   cerr << total_ops / duration << endl;
