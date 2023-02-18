@@ -1,8 +1,6 @@
-#/bin/bash
+#!/bin/bash
 
-db_names=(
-  "rocksdb"
-)
+db_names=("rocksdb")
 
 trap 'kill $(jobs -p)' SIGINT
 
