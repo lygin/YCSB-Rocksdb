@@ -40,3 +40,4 @@ redis/sample
 ycsbc
 
 rocksdb_data/*
+build/**
