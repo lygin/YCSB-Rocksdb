@@ -9,12 +9,14 @@
 #include "core/db.h"
 #include "core/properties.h"
 #include "core/faster.h"
+#include "device/file_system_disk.h"
 #include <iostream>
 #include <string>
 #include <atomic>
 using namespace FASTER::core;
 typedef FASTER::environment::QueueIoHandler handler_t;
-typedef FASTER::device::FileSystemDisk<handler_t, (1 << 30)> disk_t;
+/// Disk's log uses 64 MB segments.
+typedef FASTER::device::FileSystemDisk<handler_t, 67108864L> disk_t;
 const uint64_t _MB = 1024 * 1024;
 const uint64_t _GB = 1024 * 1024 * 1024;
 class UpsertContext;
@@ -171,9 +173,9 @@ class ReadContext : public IAsyncContext {
   }
   inline void GetAtomic(const Value& value) {
     // Get the lock on the value.
-    locker.lock();
+    // locker.lock();
     //printf("GetATOMIC %s\n", value.value_);
-    locker.unlock();
+    // locker.unlock();
   }
 
   protected:

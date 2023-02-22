@@ -6,20 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/address.cc
-address.h
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/address.h
-
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/address.h
-algorithm
--
-atomic
--
-cassert
--
-cstdint
--
-
 /home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/alloc.h
 cstdlib
 -
@@ -58,20 +44,6 @@ lss_allocator.h
 intrin.h
 -
 
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/lss_allocator.cc
-cassert
--
-cstdlib
--
-alloc.h
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/alloc.h
-auto_ptr.h
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/auto_ptr.h
-lss_allocator.h
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/lss_allocator.h
-thread.h
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/thread.h
-
 /home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/lss_allocator.h
 atomic
 -
@@ -87,10 +59,6 @@ thread.h
 /home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/status.h
 cstdint
 -
-
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/thread.cc
-thread.h
-/home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/thread.h
 
 /home/msk/YCSB-Rocksdb/third/FASTER/cc/src/core/thread.h
 atomic

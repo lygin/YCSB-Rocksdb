@@ -13,7 +13,7 @@
 thread_local Guid session;
 using namespace std;
 namespace ycsbc {
-FasterDB::FasterDB(const char *dbPath): db_(new FasterKv<Key, Value, disk_t>(16*_MB, 10*_GB, dbPath)) {
+FasterDB::FasterDB(const char *dbPath): db_(new FasterKv<Key, Value, disk_t>(16*_MB,10*_GB, dbPath, 0.9)) {
   
 }
 void FasterDB::Init() {
@@ -22,6 +22,8 @@ void FasterDB::Init() {
 }
 void FasterDB::Close() {
   db_->Refresh();
+  auto result = db_->CompletePending(true);
+  assert(result);
   db_->StopSession();
   live_sessions_--;
 }
@@ -30,6 +32,8 @@ int FasterDB::Insert(const std::string &table, const std::string &key,
                     std::vector<KVPair> &values) {
   UpsertContext context{Key(key.c_str()), Value(values[0].second.c_str())};
   auto callback = [](IAsyncContext* ctxt, Status result) {
+    // assert(false);
+    // all in memory
     assert(result == Status::Ok);
   };
   Status result = db_->Upsert(context, callback, 1);
@@ -44,7 +48,7 @@ int FasterDB::Read(const std::string &table, const std::string &key,
     assert(result == Status::Ok);
   };
   Status res = db_->Read(context, callback, 1);
-  return 0;
+  return (res == Status::Ok)? 0 : 1  ;
 }
 
 int FasterDB::Update(const std::string &table, const std::string &key,

@@ -19,5 +19,5 @@ $ make
 Run Workload A with a Rocksdb-based
 implementation of the database, for example:
 ```
-./ycsb -db faster -threads 4 -P ../workloads/workloada.spec
+./ycsb -db faster -threads 8 -P ../workloads/workloada.spec
 ```
