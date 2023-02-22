@@ -1,0 +1,2 @@
+/usr/bin/ar qc libfaster.a  CMakeFiles/faster.dir/core/address.cc.o CMakeFiles/faster.dir/core/lss_allocator.cc.o CMakeFiles/faster.dir/core/thread.cc.o CMakeFiles/faster.dir/environment/file_linux.cc.o
+/usr/bin/ranlib libfaster.a

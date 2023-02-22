@@ -65,6 +65,22 @@
     "__tuple": "cpp",
     "__verbose_abort": "cpp",
     "iostream": "cpp",
-    "future": "cpp"
+    "future": "cpp",
+    "filesystem": "cpp",
+    "cstdarg": "cpp",
+    "any": "cpp",
+    "cinttypes": "cpp",
+    "codecvt": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "set": "cpp",
+    "unordered_set": "cpp",
+    "netfwd": "cpp",
+    "optional": "cpp",
+    "iomanip": "cpp",
+    "shared_mutex": "cpp",
+    "sstream": "cpp",
+    "variant": "cpp",
+    "*.inc": "cpp"
   }
 }

@@ -1,0 +1,3 @@
+[submodule "third/FASTER"]
+	path = third/FASTER
+	url = git@github.com:microsoft/FASTER.git
