@@ -21,7 +21,6 @@ void FasterDB::Init() {
   live_sessions_++;
 }
 void FasterDB::Close() {
-  db_->Refresh();
   auto result = db_->CompletePending(true);
   assert(result);
   db_->StopSession();
@@ -35,6 +34,7 @@ int FasterDB::Insert(const std::string &table, const std::string &key,
     assert(result == Status::Ok);
   };
   Status result = db_->Upsert(context, callback, 1);
+  db_->Refresh();
   return (result == Status::Ok)? 0 : 1  ;
 }
 
@@ -46,7 +46,7 @@ int FasterDB::Read(const std::string &table, const std::string &key,
     assert(result == Status::Ok);
   };
   Status res = db_->Read(context, callback, 1);
-  return (res == Status::Ok)? 0 : 1  ;
+  return (res == Status::Ok || res == Status::NotFound)? 0 : 1  ;
 }
 
 int FasterDB::Update(const std::string &table, const std::string &key,
