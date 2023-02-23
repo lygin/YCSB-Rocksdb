@@ -1,0 +1,6 @@
+/home/msk/YCSB-Rocksdb/build/CMakeFiles/rebuild_cache.dir
+/home/msk/YCSB-Rocksdb/build/CMakeFiles/edit_cache.dir
+/home/msk/YCSB-Rocksdb/build/CMakeFiles/ycsb.dir
+/home/msk/YCSB-Rocksdb/build/third/FASTER/cc/src/CMakeFiles/rebuild_cache.dir
+/home/msk/YCSB-Rocksdb/build/third/FASTER/cc/src/CMakeFiles/edit_cache.dir
+/home/msk/YCSB-Rocksdb/build/third/FASTER/cc/src/CMakeFiles/faster.dir

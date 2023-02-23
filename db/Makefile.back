@@ -1,0 +1,16 @@
+CC=g++
+CFLAGS=-std=c++11 -c -g -Wall -fgnu-tm
+faster_include_dir=../third/FASTER/cc/src
+faster_link_dir=../third/FASTER/cc/build
+INCLUDES=-I../ 
+SOURCES=$(wildcard *.cc)
+OBJECTS=$(SOURCES:.cc=.o)
+
+all: $(SOURCES) $(OBJECTS)
+
+.cc.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -I$(faster_include_dir) -L$(faster_link_dir) -lfaster $< -o $@
+
+clean:
+	$(RM) $(OBJECTS)
+

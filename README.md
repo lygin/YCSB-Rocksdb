@@ -10,17 +10,18 @@ To build YCSB-C on Ubuntu, for example:
 
 ```
 $ sudo apt-get install libtbb-dev librocksdb-dev
+$ mkdir build
+$ cd build
+$ cmake ..
 $ make
-$ run.sh
 ```
 
 Run Workload A with a Rocksdb-based
 implementation of the database, for example:
 ```
-./ycsbc -db rocksdb -threads 8 -P workloads/workloada.spec
+./ycsb -db rocksdb -threads 8 -P ../workloads/workloada.spec
 ```
-
-Output like this:
+Output Like this:
 ```
 rocksdb workloads/workloada.spec        8
 # Loading records:      100000
@@ -88,5 +89,11 @@ Percentiles(us): P50: 10.14 P90: 19.89 P99: 36.65 P99.9: 63.17 P99.99: 122.86
 [     100,     120 )      11   0.011%  99.989% 
 [     120,     140 )       7   0.007%  99.996% 
 [     140,     160 )       2   0.002%  99.998% 
-[     160,     180 )       2   0.002% 100.000% 
+[     160,     180 )       2   0.002% 100.000%
 ```
+Run Workload A with a Faster-based
+implementation of the database, for example:
+```
+./ycsb -db faster -threads 8 -P ../workloads/workloada.spec
+```
+

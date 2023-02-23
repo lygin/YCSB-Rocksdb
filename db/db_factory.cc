@@ -11,11 +11,13 @@
 #include <string>
 #include "db/basic_db.h"
 #include "db/lock_stl_db.h"
-#include "db/redis_db.h"
 #include "db/tbb_rand_db.h"
 #include "db/tbb_scan_db.h"
 #include "db/rocksdb_db.h"
-const std::string rocksdb_path{"./rocksdb_data"};
+#include "db/faster_db.h"
+#include <filesystem>
+const std::string rocksdb_path{"rocksdb_data"};
+const std::string faster_path{"faster-logs"};
 
 using namespace std;
 using ycsbc::DB;
@@ -26,16 +28,15 @@ DB* DBFactory::CreateDB(utils::Properties &props) {
     return new BasicDB;
   } else if (props["dbname"] == "lock_stl") {
     return new LockStlDB;
-  } else if (props["dbname"] == "redis") {
-    int port = stoi(props["port"]);
-    int slaves = stoi(props["slaves"]);
-    return new RedisDB(props["host"].c_str(), port, slaves);
   } else if (props["dbname"] == "tbb_rand") {
     return new TbbRandDB;
   } else if (props["dbname"] == "tbb_scan") {
     return new TbbScanDB;
   } else if (props["dbname"] == "rocksdb") {
     return new RocksDB(rocksdb_path.c_str());
+  } else if (props["dbname"] == "faster"){
+    std::filesystem::create_directories(faster_path);
+    return new FasterDB(faster_path.c_str());
   } else return NULL;
 }
 
