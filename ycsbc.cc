@@ -117,6 +117,7 @@ int main(const int argc, const char *argv[]) {
   cerr << "# Run throughput (KOPS): ";
   cerr << total_ops / duration << endl;
   cerr << hists[0]->ToString() << endl;
+  delete db;
 }
 
 string ParseCommandLine(int argc, const char *argv[], utils::Properties &props) {

@@ -13,7 +13,7 @@
 thread_local Guid session;
 using namespace std;
 namespace ycsbc {
-FasterDB::FasterDB(const char *dbPath): db_(new FasterKv<Key, Value, disk_t>(16*_MB,10*_GB, dbPath, 0.2)) {
+FasterDB::FasterDB(const char *dbPath): db_(new FasterKv<Key, Value, disk_t>(1024,10*_GB, dbPath, 0.2)) {
   
 }
 void FasterDB::Init() {
@@ -65,6 +65,7 @@ int FasterDB::Scan(const std::string &table, const std::string &key, int len,
 }
 
 FasterDB::~FasterDB() { 
+  printf("HashtableMemoryBytes: %f MB\n", db_->HashtableMemoryBytes()*1.0/1024/1024);
 }
 
 }

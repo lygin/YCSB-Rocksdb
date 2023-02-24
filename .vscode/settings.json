@@ -81,6 +81,9 @@
     "shared_mutex": "cpp",
     "sstream": "cpp",
     "variant": "cpp",
-    "*.inc": "cpp"
+    "*.inc": "cpp",
+    "bitset": "cpp",
+    "__hash_table": "cpp",
+    "locale": "cpp"
   }
 }
