@@ -7,10 +7,10 @@ trap 'kill $(jobs -p)' SIGINT
 
 workload_dir=workloads
 
-tns=(1 2 4 8 16)
-workload=($workload_dir/workloada.spec $workload_dir/workloadb.spec $workload_dir/workloadc.spec)
+tns=(1 2 4 8 16 32 64)
+workload=($workload_dir/workloadc.spec)
 output_file=output.result
-rocksdb_data=rocksdb_data
+rocksdb_data=/mnt/nvme1/rocksdb_data
 
 rm $output_file
 
@@ -19,7 +19,7 @@ for file_name in ${workload[*]}; do
       for tn in ${tns[*]}; do
         rm -rf $rocksdb_data
         echo "Running $db_name with $tn threads for $file_name" 
-        ./ycsbc -db $db_name -threads $tn -P $file_name 2>> $output_file &
+        ./build/ycsb -db $db_name -threads $tn -P $file_name 2>> $output_file &
         wait
       done
     done

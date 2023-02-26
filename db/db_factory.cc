@@ -16,7 +16,7 @@
 #include "db/rocksdb_db.h"
 #include "db/faster_db.h"
 #include <filesystem>
-const std::string rocksdb_path{"rocksdb_data"};
+const std::string rocksdb_path{"/mnt/nvme1/rocksdb_data"};
 const std::string faster_path{"faster-logs"};
 
 using namespace std;
