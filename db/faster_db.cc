@@ -51,7 +51,7 @@ int FasterDB::Read(const std::string &table, const std::string &key,
   Status res = db_->Read(context, callback, 1);
   if(res == Status::NotFound) {
     const char *key = context.key().key_;
-    printf("%d %s\n", strlen(key), key);
+    printf("%ld %s\n", strlen(key), key);
   }
   return (res == Status::Ok)? 0 : 1  ;
 }

@@ -7,9 +7,9 @@ trap 'kill $(jobs -p)' SIGINT
 
 workload_dir=workloads
 
-tns=(1 2 4 8 16 32 64)
-workload=($workload_dir/workloadc.spec)
-output_file=faster_output.result
+tns=(1 2 4 8 16)
+workload=($workload_dir/workloada.spec $workload_dir/workloadb.spec)
+output_file=faster_output2.result
 rocksdb_data=/mnt/nvme1/faster_data
 
 rm $output_file
