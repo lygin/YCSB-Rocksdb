@@ -17,7 +17,7 @@
 #include "db/faster_db.h"
 #include <filesystem>
 const std::string rocksdb_path{"/mnt/nvme1/rocksdb_data"};
-const std::string faster_path{"faster-logs"};
+const std::string faster_path{"/mnt/nvme1/faster_data"};
 
 using namespace std;
 using ycsbc::DB;
@@ -33,6 +33,7 @@ DB* DBFactory::CreateDB(utils::Properties &props) {
   } else if (props["dbname"] == "tbb_scan") {
     return new TbbScanDB;
   } else if (props["dbname"] == "rocksdb") {
+    std::filesystem::create_directories(rocksdb_path);
     return new RocksDB(rocksdb_path.c_str());
   } else if (props["dbname"] == "faster"){
     std::filesystem::create_directories(faster_path);

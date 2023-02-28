@@ -12,10 +12,13 @@
 
 thread_local Guid session;
 using namespace std;
+static const uint64_t table_size = 16*_MB;
+static const uint64_t log_size = 10*_GB;
+static const double log_inmem_ratio = 0.2;
 namespace ycsbc {
-FasterDB::FasterDB(const char *dbPath): db_(new FasterKv<Key, Value, disk_t>(1024,10*_GB, dbPath, 0.2)) {
-  
-}
+FasterDB::FasterDB(const char *dbPath): 
+  db_(new FasterKv<Key, Value, disk_t>(table_size,log_size, dbPath, log_inmem_ratio)) {}
+
 void FasterDB::Init() {
   session = db_->StartSession();
   live_sessions_++;
@@ -46,7 +49,11 @@ int FasterDB::Read(const std::string &table, const std::string &key,
     assert(result == Status::Ok);
   };
   Status res = db_->Read(context, callback, 1);
-  return (res == Status::Ok || res == Status::NotFound)? 0 : 1  ;
+  if(res == Status::NotFound) {
+    const char *key = context.key().key_;
+    printf("%d %s\n", strlen(key), key);
+  }
+  return (res == Status::Ok)? 0 : 1  ;
 }
 
 int FasterDB::Update(const std::string &table, const std::string &key,
@@ -64,8 +71,10 @@ int FasterDB::Scan(const std::string &table, const std::string &key, int len,
   return 0;
 }
 
-FasterDB::~FasterDB() { 
-  printf("HashtableMemoryBytes: %f MB\n", db_->HashtableMemoryBytes()*1.0/1024/1024);
+FasterDB::~FasterDB() {
+  char buf[100] = {0};
+  sprintf(buf, "Hashtable Memory Used: %f MB\n", db_->HashtableMemoryBytes()*1.0/1024/1024);
+  cerr << buf;
 }
 
 }

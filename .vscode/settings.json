@@ -84,6 +84,7 @@
     "*.inc": "cpp",
     "bitset": "cpp",
     "__hash_table": "cpp",
-    "locale": "cpp"
+    "locale": "cpp",
+    "__memory": "cpp"
   }
 }

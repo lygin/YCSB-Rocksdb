@@ -64,9 +64,11 @@ class Key {
  public:
   Key(const char *key){
     memcpy(key_, key, 8);
+    key_[8] = '\0';
   }
-
-  Key(const Key&) = default;
+  Key(const Key& other) {
+    memcpy(key_, other.key_, 9);
+  }
 
   inline static constexpr uint32_t size() {
     return static_cast<uint32_t>(sizeof(Key));
@@ -78,13 +80,13 @@ class Key {
   }
 
   inline bool operator==(const Key& other) const {
-    return strncmp(key_, other.key_, 8) == 0;
+    return strncmp(key_, other.key_, 9) == 0;
   }
   inline bool operator!=(const Key& other) const {
-    return strncmp(key_, other.key_, 8) != 0;
+    return strncmp(key_, other.key_, 9) != 0;
   }
 
-  char key_[8];
+  char key_[9];
 };
 
 
@@ -92,6 +94,10 @@ class Value {
   public:
   Value(const char *value) {
     memcpy(value_, value, 8);
+    value_[8] = '\0';
+  }
+  Value(const Value& other) {
+    memcpy(value_, other.value_, 9);
   }
 
   inline static constexpr uint32_t size() {
@@ -101,7 +107,7 @@ class Value {
   friend class UpsertContext;
   friend class ReadContext;
 
-  char value_[8];
+  char value_[9];
 };
 
 class UpsertContext : public IAsyncContext {
